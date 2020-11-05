@@ -14,7 +14,7 @@ from sklearn.manifold import TSNE
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-parser = argparse.ArgumentParser(description='PyTorch t-SNE for CIFAR10')
+parser = argparse.ArgumentParser(description='PyTorch t-SNE for STL10')
 parser.add_argument('--save-dir', type=str, default='./results', help='path to save the t-sne image')
 parser.add_argument('--batch-size', type=int, default=128, help='batch size (default: 128)')
 parser.add_argument('--seed', type=int, default=1, help='random seed value (default: 1)')
@@ -37,7 +37,7 @@ transform = transforms.Compose([
     transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
 ])
 
-dataset = torchvision.datasets.CIFAR10(root='~/Downloads', train=False, download=True, transform=transform)
+dataset = torchvision.datasets.STL10(root='~/Downloads', split='train', download=True, transform=transform)
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
 
 # set model
@@ -65,7 +65,7 @@ def gen_features():
             targets_list.append(targets_np[:, np.newaxis])
             outputs_list.append(outputs_np)
             
-            if idx+1 % 10 == 0 or idx+1 == len(dataloader):
+            if ((idx+1) % 10 == 0) or (idx+1 == len(dataloader)):
                 print(idx+1, '/', len(dataloader))
 
     targets = np.concatenate(targets_list, axis=0)
